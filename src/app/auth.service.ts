@@ -1,6 +1,6 @@
 import { UserService } from './user.service';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { Observable } from 'rxjs';
+import { EMPTY, Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
 import { ActivatedRoute } from '@angular/router';
@@ -31,7 +31,12 @@ export class AuthService {
 
   get appUSer$(): Observable<AppUser> {
     return this.user$.pipe(
-      switchMap(user => this.userService.get(user.uid))
+      switchMap(user => {
+        if (user) {
+          return this.userService.get(user.uid);
+        }
+        return of(null);
+      })
     );
   }
 }
