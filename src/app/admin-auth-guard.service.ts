@@ -13,9 +13,8 @@ export class AdminAuthGuardService implements CanActivate {
   constructor(private auth: AuthService, private userService: UserService) { }
 
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    return this.auth.user$.pipe(
-      switchMap(user => this.userService.get(user.uid)),
+  canActivate(): Observable<boolean> {
+    return this.auth.appUSer$.pipe(
       map(x => x.isAdmin)
     );
   }
