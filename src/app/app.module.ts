@@ -1,3 +1,4 @@
+import { CategoryService } from './category.service';
 import { AdminAuthGuardService as AdminAuthGuard } from './admin-auth-guard.service';
 import { UserService } from './user.service';
 import { AuthGuardService as AuthGuard } from './auth-guard.service';
@@ -61,7 +62,7 @@ import { ProductFromComponent } from './admin/product-from/product-from.componen
     ]),
     NgbModule
   ],
-  providers: [AuthService, AuthGuard, AdminAuthGuard, UserService],
+  providers: [AuthService, AuthGuard, AdminAuthGuard, UserService, CategoryService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

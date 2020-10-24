@@ -1,3 +1,4 @@
+import { CategoryService } from './../../category.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,7 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProductFromComponent implements OnInit {
 
-  constructor() { }
+  categories$;
+
+  constructor(categoryService: CategoryService) {
+    this.categories$ = categoryService.getCategories().valueChanges();
+    console.log(this.categories$);
+   }
 
   ngOnInit(): void {
   }
