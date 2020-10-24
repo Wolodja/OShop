@@ -1,15 +1,14 @@
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CategoryService {
+export class ProductService {
 
   constructor(private db: AngularFireDatabase) { }
 
-  getCategories(){
-    return this.db.list('/categories', ref => ref.orderByChild('name'));
+  create(porduct){
+    this.db.list('products').push(porduct);
   }
 }

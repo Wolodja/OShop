@@ -1,3 +1,4 @@
+import { ProductService } from './product.service';
 import { CategoryService } from './category.service';
 import { AdminAuthGuardService as AdminAuthGuard } from './admin-auth-guard.service';
 import { UserService } from './user.service';
@@ -25,6 +26,7 @@ import { LoginComponent } from './login/login.component';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProductFromComponent } from './admin/product-from/product-from.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -43,6 +45,7 @@ import { ProductFromComponent } from './admin/product-from/product-from.componen
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
@@ -62,7 +65,7 @@ import { ProductFromComponent } from './admin/product-from/product-from.componen
     ]),
     NgbModule
   ],
-  providers: [AuthService, AuthGuard, AdminAuthGuard, UserService, CategoryService],
+  providers: [AuthService, AuthGuard, AdminAuthGuard, UserService, CategoryService, ProductService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
