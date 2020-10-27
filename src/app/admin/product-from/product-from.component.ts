@@ -14,6 +14,7 @@ export class ProductFromComponent implements OnInit {
 
   categories$;
   product: any;
+  id;
 
   constructor(private categoryService: CategoryService,
               private productService: ProductService,
@@ -22,15 +23,19 @@ export class ProductFromComponent implements OnInit {
     this.product = {};
     this.categories$ = categoryService.getCategories().snapshotChanges();
 
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.productService.getById(id).valueChanges().pipe(take(1)).subscribe(p => this.product = p);
+    this.id = this.route.snapshot.paramMap.get('id');
+    if (this.id) {
+      this.productService.getById(this.id).valueChanges().pipe(take(1)).subscribe(p => this.product = p);
     }
     console.log(this.product);
   }
 
   save(product) {
-    this.productService.create(product);
+    if (this.id) {
+      this.productService.update(this.id, product);
+    } else {
+      this.productService.create(product);
+    }
     this.router.navigate(['/admin/products']);
   }
 
