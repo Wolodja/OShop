@@ -27,7 +27,6 @@ export class ProductFromComponent implements OnInit {
     if (this.id) {
       this.productService.getById(this.id).valueChanges().pipe(take(1)).subscribe(p => this.product = p);
     }
-    console.log(this.product);
   }
 
   save(product) {
@@ -36,6 +35,13 @@ export class ProductFromComponent implements OnInit {
     } else {
       this.productService.create(product);
     }
+    this.router.navigate(['/admin/products']);
+  }
+
+  delete() {
+    if (!confirm('Are You sure You want to delete this product?')) { return; }
+
+    this.productService.delete(this.id);
     this.router.navigate(['/admin/products']);
   }
 
