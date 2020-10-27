@@ -1,3 +1,5 @@
+import { map } from 'rxjs/operators';
+import { Product } from './../../models/product';
 import { ProductService } from './../../product.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
@@ -9,17 +11,19 @@ import { Subscription } from 'rxjs';
 })
 export class AdminProductsComponent implements OnDestroy {
 
-  products: any[];
-  filterdProducts: any[];
+  products: Product[];
+  filterdProducts: Product[];
   subscription: Subscription;
 
   constructor(private productService: ProductService) {
     this.subscription = this.productService.getAll()
-      .valueChanges()
-      .subscribe(products => {
-        this.filterdProducts = this.products = products;
-      });
-  }
+      .snapshotChanges()
+      .pipe(map(actions => actions.map(action =>{
+        const $key = action.payload.key;
+        const data = { $key, ...action.payload.val() };
+        return data;
+      }))).subscribe(pr => this.products = this.filterdProducts = pr);
+    }
 
   filter(query: string) {
     this.filterdProducts = (query) ?
