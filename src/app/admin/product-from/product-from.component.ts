@@ -21,7 +21,7 @@ export class ProductFromComponent implements OnInit {
               private router: Router,
               private route: ActivatedRoute) {
     this.product = {};
-    this.categories$ = categoryService.getCategories().snapshotChanges();
+    this.categories$ = categoryService.getAll().snapshotChanges();
 
     this.id = this.route.snapshot.paramMap.get('id');
     if (this.id) {
