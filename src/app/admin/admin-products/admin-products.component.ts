@@ -18,12 +18,13 @@ export class AdminProductsComponent implements OnDestroy {
   constructor(private productService: ProductService) {
     this.subscription = this.productService.getAll()
       .snapshotChanges()
-      .pipe(map(actions => actions.map(action =>{
-        const $key = action.payload.key;
-        const data = { $key, ...action.payload.val() };
+      .pipe(map(actions => actions.map(action => {
+        const key$ = action.payload.key;
+        const data: Product = { key$, ...(action.payload.val() as object) } as Product;
+        console.log(data);
         return data;
       }))).subscribe(pr => this.products = this.filterdProducts = pr);
-    }
+  }
 
   filter(query: string) {
     this.filterdProducts = (query) ?
