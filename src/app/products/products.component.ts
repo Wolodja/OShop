@@ -1,7 +1,6 @@
 import { ActivatedRoute } from '@angular/router';
-import { CategoryService } from './../category.service';
 import { ProductService } from './../product.service';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Product } from '../models/product';
 
 @Component({
@@ -13,24 +12,22 @@ export class ProductsComponent {
 
   products: any[] = [];
   filteredProducts: Product[];
-  categories$;
+
   category: string;
 
-  constructor(productServie: ProductService, categoryService: CategoryService, route: ActivatedRoute) {
+  constructor(productServie: ProductService, route: ActivatedRoute) {
     productServie.getAll().valueChanges().subscribe(products => {
       this.products = products;
 
       route.queryParamMap.subscribe(params => {
         this.category = params.get('category');
-  
+
         this.filteredProducts = (this.category) ?
           this.products.filter(p => p.category === this.category) :
           this.products;
       });
     });
-    this.categories$ = categoryService.getAll().snapshotChanges();
 
-    
   }
 
 }

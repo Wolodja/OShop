@@ -28,6 +28,7 @@ import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProductFromComponent } from './admin/product-from/product-from.component';
 import { FormsModule } from '@angular/forms';
+import { ProductFilterComponent } from './products/product-filter/product-filter.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { FormsModule } from '@angular/forms';
     AdminProductsComponent,
     AdminOrdersComponent,
     LoginComponent,
-    ProductFromComponent
+    ProductFromComponent,
+    ProductFilterComponent
   ],
   imports: [
     BrowserModule,
