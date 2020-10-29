@@ -5,10 +5,11 @@ import { Component, Input, OnInit } from '@angular/core';
   templateUrl: './product-card.component.html',
   styleUrls: ['./product-card.component.css']
 })
-export class ProductCardComponent {
+export class ProductCardComponent implements OnInit {
 
   @Input() product;
   @Input('show-actions') showActions = true;
 
   constructor() { }
+
 }
