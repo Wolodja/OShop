@@ -1,5 +1,6 @@
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Injectable } from '@angular/core';
+import { Product } from './models/product';
 
 @Injectable({
   providedIn: 'root'
@@ -15,21 +16,20 @@ export class ShoppingCartService {
   }
 
   private getCart(cartId: string) {
-    return this.db.object('/shoping-cart/' + cartId);
+    return this.db.object('/shoping-cart/' + cartId).valueChanges();
   }
 
 
-  private async getOrCreateCart() {
+  private async getOrCreateCartId() {
     const cartId = localStorage.getItem('cartId');
-    if (!cartId) {
-      const result = await this.create();
-      localStorage.setItem('cartId', result.key);
-      return this.getCart(result.key);
-    }
-    return this.getCart(cartId);
+    if (cartId) { return cartId; }
+
+    const result = await this.create();
+    localStorage.setItem('cartId', result.key);
+    return result.key;
   }
 
-  addToCart(Product){
-
+  async addToCart(product: Product) {
+    const cart = await this.getOrCreateCartId();
   }
 }
