@@ -13,4 +13,23 @@ export class ShoppingCartService {
       dateCreated: new Date().getTime()
     });
   }
+
+  private getCart(cartId: string) {
+    return this.db.object('/shoping-cart/' + cartId);
+  }
+
+
+  private async getOrCreateCart() {
+    const cartId = localStorage.getItem('cartId');
+    if (!cartId) {
+      const result = await this.create();
+      localStorage.setItem('cartId', result.key);
+      return this.getCart(result.key);
+    }
+    return this.getCart(cartId);
+  }
+
+  addToCart(Product){
+
+  }
 }
