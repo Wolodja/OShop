@@ -10,6 +10,11 @@ export class ShoppingCartService {
 
   constructor(private db: AngularFireDatabase) { }
 
+  async getCart(){
+    const cartId = await this.getOrCreateCartId();
+    return this.db.object('/shopping-cart/' + cartId);
+  }
+
   create() {
     return this.db.list('/shopping-carts').push({
       dateCreated: new Date().getTime()
@@ -20,7 +25,7 @@ export class ShoppingCartService {
     return this.db.object('shopping-cart/' + cartId + '/items/' + productId);
   }
 
-  private async getOrCreateCartId() {
+  private async getOrCreateCartId(): Promise<string> {
     const cartId = localStorage.getItem('cartId');
     if (cartId) { return cartId; }
 
