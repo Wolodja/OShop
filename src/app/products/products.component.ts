@@ -2,6 +2,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ProductService } from './../product.service';
 import { Component } from '@angular/core';
 import { Product } from '../models/product';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-products',
@@ -16,7 +17,14 @@ export class ProductsComponent {
   category: string;
 
   constructor(productServie: ProductService, route: ActivatedRoute) {
-    productServie.getAll().valueChanges().subscribe(products => {
+    productServie.getAll()
+    .snapshotChanges()
+    .pipe(map(actions => actions.map(action => {
+      const key$ = action.payload.key;
+      const data: Product = { key$, ...(action.payload.val() as object) } as Product;
+      return data;
+    })))
+    .subscribe(products => {
       this.products = products;
 
       route.queryParamMap.subscribe(params => {

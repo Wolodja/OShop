@@ -1,3 +1,4 @@
+import { take } from 'rxjs/operators';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Injectable } from '@angular/core';
 import { Product } from './models/product';
@@ -30,6 +31,20 @@ export class ShoppingCartService {
   }
 
   async addToCart(product: Product) {
-    const cart = await this.getOrCreateCartId();
+    console.log(product);
+    const cartId = await this.getOrCreateCartId();
+    const item$ = this.db.object('shopping-cart/' + cartId + '/items/' + product.key$);
+
+    item$.snapshotChanges().pipe(take(1)).subscribe((item: any) => {
+      if (item.payload.val()) {
+        item$.update({quantity: item.payload.val().quantity + 1});
+      }
+      else {
+        const tempKey = product.key$;
+        delete product.key$ ;
+        item$.set( {product, quantity: 1 });
+        product.key$ = tempKey;
+      }
+    });
   }
 }
