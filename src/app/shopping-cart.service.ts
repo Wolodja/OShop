@@ -16,10 +16,9 @@ export class ShoppingCartService {
     });
   }
 
-  private getCart(cartId: string) {
-    return this.db.object('/shoping-cart/' + cartId).valueChanges();
+  private getItem(cartId: string, productId: string){
+    return this.db.object('shopping-cart/' + cartId + '/items/' + productId);
   }
-
 
   private async getOrCreateCartId() {
     const cartId = localStorage.getItem('cartId');
@@ -31,20 +30,14 @@ export class ShoppingCartService {
   }
 
   async addToCart(product: Product) {
-    console.log(product);
     const cartId = await this.getOrCreateCartId();
-    const item$ = this.db.object('shopping-cart/' + cartId + '/items/' + product.key$);
+    const item$ = this.getItem(cartId, product.key$);
 
     item$.snapshotChanges().pipe(take(1)).subscribe((item: any) => {
-      if (item.payload.val()) {
-        item$.update({quantity: item.payload.val().quantity + 1});
-      }
-      else {
-        const tempKey = product.key$;
-        delete product.key$ ;
-        item$.set( {product, quantity: 1 });
-        product.key$ = tempKey;
-      }
+      const tempKey = product.key$;
+      delete product.key$ ;
+      item$.update({product, quantity: (item.payload.val() ? item.payload.val().quantity : 0) + 1});
+      product.key$ = tempKey;
     });
   }
 }
