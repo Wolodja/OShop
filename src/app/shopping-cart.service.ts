@@ -1,8 +1,10 @@
 import { take } from 'rxjs/operators';
-import { AngularFireDatabase } from 'angularfire2/database';
+import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
 import { Injectable } from '@angular/core';
 import { Product } from './models/product';
 import { number } from 'ngx-custom-validators/src/app/number/validator';
+import { ShoppingCart } from './models/shopping-cart';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +13,7 @@ export class ShoppingCartService {
 
   constructor(private db: AngularFireDatabase) { }
 
-  async getCart() {
+  async getCart(): Promise<AngularFireObject<ShoppingCart>> {
     const cartId = await this.getOrCreateCartId();
     return this.db.object('/shopping-cart/' + cartId);
   }
