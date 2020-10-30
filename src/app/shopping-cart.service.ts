@@ -2,6 +2,7 @@ import { take } from 'rxjs/operators';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Injectable } from '@angular/core';
 import { Product } from './models/product';
+import { number } from 'ngx-custom-validators/src/app/number/validator';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class ShoppingCartService {
 
   constructor(private db: AngularFireDatabase) { }
 
-  async getCart(){
+  async getCart() {
     const cartId = await this.getOrCreateCartId();
     return this.db.object('/shopping-cart/' + cartId);
   }
@@ -21,7 +22,7 @@ export class ShoppingCartService {
     });
   }
 
-  private getItem(cartId: string, productId: string){
+  private getItem(cartId: string, productId: string) {
     return this.db.object('shopping-cart/' + cartId + '/items/' + productId);
   }
 
@@ -35,13 +36,21 @@ export class ShoppingCartService {
   }
 
   async addToCart(product: Product) {
+    this.changeProductQuantity(product, 1);
+  }
+
+  async removeFromCart(product: Product) {
+    this.changeProductQuantity(product, -1);
+  }
+
+  private async changeProductQuantity(product: Product, number: Number) {
     const cartId = await this.getOrCreateCartId();
     const item$ = this.getItem(cartId, product.key$);
 
     item$.snapshotChanges().pipe(take(1)).subscribe((item: any) => {
       const tempKey = product.key$;
-      delete product.key$ ;
-      item$.update({product, quantity: (item.payload.val() ? item.payload.val().quantity : 0) + 1});
+      delete product.key$;
+      item$.update({ product, quantity: (item.payload.val() ? item.payload.val().quantity : 0) + number });
       product.key$ = tempKey;
     });
   }
