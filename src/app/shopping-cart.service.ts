@@ -2,9 +2,7 @@ import { take } from 'rxjs/operators';
 import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
 import { Injectable } from '@angular/core';
 import { Product } from './models/product';
-import { number } from 'ngx-custom-validators/src/app/number/validator';
 import { ShoppingCart } from './models/shopping-cart';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
