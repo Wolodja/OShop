@@ -17,7 +17,7 @@ export class ShoppingCartComponent implements OnInit {
   async ngOnInit() {
     this.cart$ = (await this.shoppingCartService.getCart())
       .valueChanges()
-      .pipe(map(x => new ShoppingCart(x.items)));
+      .pipe(map(x => new ShoppingCart(x.items) ));
   }
 
 }
