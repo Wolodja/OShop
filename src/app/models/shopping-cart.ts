@@ -1,4 +1,3 @@
-import { Product } from './product';
 import { ShoppingCartItem } from './shopping-cart-item';
 
 export class ShoppingCart {
@@ -9,15 +8,8 @@ export class ShoppingCart {
         let item = itemsMap[productId];
         this.items.push(new ShoppingCartItem(item.product, item.quantity));
       }
-      console.log(itemsMap);
     }
 
-    getQuantity(product: Product){
-      console.log(this.itemsMap);
-      const item = this.itemsMap[product.key$];
-      console.log(item);
-      return 0;//item ? item.quantity : 0;
-    }
 
     get totalItemsCount() {
         let count = 0; 
