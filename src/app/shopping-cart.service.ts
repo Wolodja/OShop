@@ -13,7 +13,7 @@ export class ShoppingCartService {
 
   async getCart(): Promise<AngularFireObject<ShoppingCartFire>> {
     const cartId = await this.getOrCreateCartId();
-    return this.db.object('/shopping-cart/' + cartId);
+    return this.db.object('/shopping-carts/' + cartId);
   }
 
   create() {
@@ -23,7 +23,7 @@ export class ShoppingCartService {
   }
 
   private getItem(cartId: string, productId: string) {
-    return this.db.object('shopping-cart/' + cartId + '/items/' + productId);
+    return this.db.object('shopping-carts/' + cartId + '/items/' + productId);
   }
 
   private async getOrCreateCartId(): Promise<string> {
@@ -36,22 +36,27 @@ export class ShoppingCartService {
   }
 
   async addToCart(product: Product) {
-    this.changeProductQuantity(product, 1);
+    this.updateItem(product, 1);
   }
 
   async removeFromCart(product: Product) {
-    this.changeProductQuantity(product, -1);
+    this.updateItem(product, -1);
   }
 
-  private async changeProductQuantity(product: Product, number: Number) {
+  private async updateItem(product: Product, number: Number) {
     const cartId = await this.getOrCreateCartId();
-    const item$ = this.getItem(cartId, product.key$);
+    const item$ = this.getItem(cartId, product.$key);
 
     item$.snapshotChanges().pipe(take(1)).subscribe((item: any) => {
-      const tempKey = product.key$;
-      delete product.key$;
-      item$.update({ product, quantity: (item.payload.val() ? item.payload.val().quantity : 0) + number });
-      product.key$ = tempKey;
+      const tempKey = product.$key;
+      delete product.$key;
+      item$.update({ 
+        title: product.title,
+        imageUrl: product.imageUrl, 
+        price: product.price,
+        quantity: (item.payload.val() ? item.payload.val().quantity : 0) + number 
+      });
+      product.$key = tempKey;
     });
   }
 }

@@ -19,9 +19,8 @@ export class AdminProductsComponent implements OnDestroy {
     this.subscription = this.productService.getAll()
       .snapshotChanges()
       .pipe(map(actions => actions.map(action => {
-        const key$ = action.payload.key;
-        const data: Product = { key$, ...(action.payload.val() as object) } as Product;
-        console.log(data);
+        const $key = action.payload.key;
+        const data: Product = { $key, ...(action.payload.val() as object) } as Product;
         return data;
       }))).subscribe(pr => this.products = this.filterdProducts = pr);
   }

@@ -5,6 +5,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Product } from '../models/product';
 import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { ShoppingCart } from '../models/shopping-cart';
 
 @Component({
   selector: 'app-products',
@@ -24,8 +25,8 @@ export class ProductsComponent implements OnInit, OnDestroy {
     productServie.getAll()
       .snapshotChanges()
       .pipe(map(actions => actions.map(action => {
-        const key$ = action.payload.key;
-        const data: Product = { key$, ...(action.payload.val() as object) } as Product;
+        const $key = action.payload.key;
+        const data: Product = { $key, ...(action.payload.val() as object) } as Product;
         return data;
       })))
       .subscribe(products => {
@@ -44,7 +45,9 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.subscription = (await this.shoppingCartService.getCart())
-      .snapshotChanges().subscribe(
+      .valueChanges()
+      .pipe(map(x => new ShoppingCart(x.items) ))
+      .subscribe(
         cart => this.cart = cart
       );
   }
