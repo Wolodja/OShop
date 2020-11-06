@@ -20,4 +20,8 @@ export class ShoppingCartComponent implements OnInit {
       .pipe(map(x => new ShoppingCart(x.items) ));
   }
 
+    clearCart() {
+      this.shoppingCartService.clearCart();
+    }
+
 }
