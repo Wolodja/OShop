@@ -53,15 +53,20 @@ export class ShoppingCartService {
     const item$ = this.getItem(cartId, product.$key);
 
     item$.snapshotChanges().pipe(take(1)).subscribe((item: any) => {
-      const tempKey = product.$key;
-      delete product.$key;
-      item$.update({
-        title: product.title,
-        imageUrl: product.imageUrl,
-        price: product.price,
-        quantity: (item.payload.val() ? item.payload.val().quantity : 0) + number
-      });
-      product.$key = tempKey;
+      let quantity = (item.payload.val() ? item.payload.val().quantity : 0) + number;
+      if (quantity === 0) {
+        item$.remove()
+      } else {
+        const tempKey = product.$key;
+        delete product.$key;
+        item$.update({
+          title: product.title,
+          imageUrl: product.imageUrl,
+          price: product.price,
+          quantity: quantity
+        });
+        product.$key = tempKey;
+      }
     });
   }
 }

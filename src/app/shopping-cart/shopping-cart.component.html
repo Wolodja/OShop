@@ -15,14 +15,14 @@
                 <td>
                     <product-quantity [product]="item" [shopping-cart]="cart"></product-quantity>
                 </td>
-                <td>{{ item.totalPrice | currency: 'USD':true }}</td>
+                <td>{{ item.totalPrice | currency : 'USD' }}</td>
             </tr>
         </tbody>
         <tfoot>
             <tr>
                 <th></th>
                 <th></th>
-                <th>{{cart.totalPrice | currency: 'USD':true}}</th>
+                <th>{{cart.totalPrice | currency: 'USD'}}</th>
             </tr>
         </tfoot>
     </table>
