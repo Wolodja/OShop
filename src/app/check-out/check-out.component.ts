@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { AuthService } from '../auth.service';
 import { ShoppingCart } from '../models/shopping-cart';
 import { OrderService } from '../order.service';
 import { ShoppingCartService } from '../shopping-cart.service';
@@ -13,20 +14,27 @@ import { ShoppingCartService } from '../shopping-cart.service';
 export class CheckOutComponent implements OnInit, OnDestroy {
   shipping: any = {};
   cart: ShoppingCart;
-  subscription: Subscription;
+  cartSubscription: Subscription;
+  userSubscription: Subscription;
+  userId: String;
 
-  constructor(private shoppingCartService: ShoppingCartService, private orderService: OrderService) { }
+  constructor(
+    private shoppingCartService: ShoppingCartService,
+    private orderService: OrderService,
+    private authService: AuthService) { }
 
 
   async ngOnInit() {
-    this.subscription = (await this.shoppingCartService.getCart())
+    this.cartSubscription = (await this.shoppingCartService.getCart())
       .valueChanges()
       .pipe(map(x => new ShoppingCart(x.items)))
       .subscribe(cart => this.cart = cart);
+      this.authService.user$.subscribe(user => this.userId = user.uid);
   }
 
   placeOrder() {
     const order = {
+      userId: this.userId,
       datePlace: new Date().getTime(),
       shipping: this.shipping,
       items: this.cart.items.map(i => {
@@ -45,6 +53,7 @@ export class CheckOutComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.cartSubscription.unsubscribe();
+    this.userSubscription.unsubscribe();
   }
 }
