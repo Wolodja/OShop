@@ -1,10 +1,10 @@
-import { ShoppingCartService } from './shopping-cart.service';
-import { ProductService } from './product.service';
-import { CategoryService } from './category.service';
+import { ShoppingCartService } from 'shared/services/shopping-cart.service';
+import { ProductService } from 'shared/services/product.service';
+import { CategoryService } from 'shared/services/category.service';
 import { AdminAuthGuardService as AdminAuthGuard } from './admin-auth-guard.service';
-import { UserService } from './user.service';
-import { AuthGuardService as AuthGuard } from './auth-guard.service';
-import { AuthService } from './auth.service';
+import { UserService } from 'shared/services/user.service';
+import { AuthGuardService as AuthGuard } from 'shared/services/auth-guard.service';
+import { AuthService } from 'shared/services/auth.service';
 
 import { environment } from './../environments/environment';
 import { BrowserModule } from '@angular/platform-browser';
@@ -30,9 +30,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProductFromComponent } from './admin/product-from/product-from.component';
 import { FormsModule } from '@angular/forms';
 import { ProductFilterComponent } from './products/product-filter/product-filter.component';
-import { ProductCardComponent } from './product-card/product-card.component';
-import { ProductQuantityComponent } from './product-quantity/product-quantity.component';
-import { OrderService } from './order.service';
+import { ProductCardComponent } from 'shared/components/product-card/product-card.component';
+import { ProductQuantityComponent } from 'shared/components/product-quantity/product-quantity.component';
+import { OrderService } from 'shared/services/order.service';
 import { ShoppingCartSummaryComponent } from './shopping-cart-summary/shopping-cart-summary.component';
 import { ShippingFormComponent } from './shipping-form/shipping-form.component';
 

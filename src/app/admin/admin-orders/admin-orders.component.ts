@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { OrderService } from 'src/app/order.service';
+import { Component } from '@angular/core';
+import { OrderService } from 'shared/services/order.service';
 
 @Component({
   selector: 'app-admin-orders',
@@ -10,7 +10,7 @@ export class AdminOrdersComponent {
 
   orders$;
 
-  constructor(private orderService: OrderService) {
+  constructor(orderService: OrderService) {
     this.orders$ = orderService.getOrders().valueChanges();
    }
 
